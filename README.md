@@ -1,18 +1,22 @@
-# Lambda handler with Poetry
+# Lambda Handler with Poetry
 
 ## Prerequisites
 - Python 3.10 or later
 - Poetry
-- An S3 bucket created with AWSLambdaExecute policy attached to the corresponding role.
+- An S3 bucket created with **AWSLambdaExecute** policy attached to the corresponding role.
 
 ## Starting the Project
+- Create a new poetry project:
 ```
- $ poetry new lambda-with-poetry
- $ cd to lambda-with-poetry
- $ Open the pyproject.toml file and add dependencies to the [tool.poetry.dependencies] section.
- $ Create a lambda_handler.py file.
- $ Write Lambda handler in the file.
- $ Run #poetry install# to create a virtual environment:
+$ poetry new lambda-with-poetry
+$ cd to lambda-with-poetry
+```
+- Open the pyproject.toml file and add dependencies to the [tool.poetry.dependencies] section.
+- Create a lambda_handler.py file.
+- Write Lambda handler in the file.
+- Run this command to create a virtual environment:
+```
+$poetry install
 ```
 
 ## Creating A Package (zip file)

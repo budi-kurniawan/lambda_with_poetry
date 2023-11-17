@@ -5,14 +5,15 @@
 - Poetry
 - An S3 bucket created with AWSLambdaExecute policy attached to the corresponding role.
 
-## Starting Project
-$ Run
-    poetry new lambda-with-poetry
-$ cd to lambda-with-poetry
-$ Open the pyproject.toml file and add dependencies to the [tool.poetry.dependencies] section.
-$ Create a lambda_handler.py file.
-$ Write Lambda handler in the file.
-$ Run the following to create a virtual environment:
+## Starting the Project
+```
+- $ poetry new lambda-with-poetry
+- $ cd to lambda-with-poetry
+'''
+- $ Open the pyproject.toml file and add dependencies to the [tool.poetry.dependencies] section.
+- $ Create a lambda_handler.py file.
+- $ Write Lambda handler in the file.
+- $ Run the following to create a virtual environment:
 ```poetry install```
 
 

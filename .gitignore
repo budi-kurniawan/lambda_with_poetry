@@ -3,3 +3,4 @@ dist/
 package/
 poetry.lock
 lambda_with_poetry
+__pycache__/

@@ -68,12 +68,11 @@ async def process(bucket_name: str, events: List[Message]) -> None:
 def timestamp_to_date_string(ts: int) -> str:
     ''' Converts an int representing a timestamp to a string representing Y-m-d'''
     dt = datetime.fromtimestamp(ts)
-    result = '%s-%s-%s' % (dt.year, dt.month, dt.day)
-    return result
+    return f'{dt.year}-{dt.month}-{dt.day}'
 
 def lambda_handler(events: Message | List[Message], _) -> HttpResponse:
     ''' The main lambda handler'''
-    if isinstance(events, dict):
+    if isinstance(events, dict): # if there is only one message, enclose in List
         events = [events]
     bucket_name = os.environ['S3_TARGET_BUCKET_NAME']
     asyncio.run(process(bucket_name, events))

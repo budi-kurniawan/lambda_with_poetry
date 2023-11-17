@@ -19,14 +19,20 @@ $ Run the following to create a virtual environment:
 ## Creating A Package (zip file)
 AWS Lambda accepts a zip file containing one or multiple handlers plus all the dependencies. See https://docs.aws.amazon.com/lambda/latest/dg/python-package.html.
 
+```
 $ poetry build # it will create a dist folder
 $ poetry run pip install --upgrade -t package dist/complete-file-name.whl
 
 $ cd package 
 $ jar cvf ../artifact.zip -R .
 $ or zip -r ../artifact.zip . -x '*.pyc'
+```
 
 
+## Running the Test
+```
+$ python test.py
+```
 
 ## References
 - https://chariotsolutions.com/blog/post/building-lambdas-with-poetry/

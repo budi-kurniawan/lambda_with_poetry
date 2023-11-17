@@ -1,13 +1,26 @@
 [tool.poetry]
 name = "lambda-with-poetry"
 version = "0.1.0"
-description = ""
+description = "AWS Lambda Handler"
 authors = ["budi-kurniawan <budi2020@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
+"aws-cdk.aws-events" = {version = "*", optional = true}
+"aws-cdk.aws-events-targets" = {version = "*", optional = true}
+"aws-cdk.aws-iam" = {version = "*", optional = true}
+"aws-cdk.aws-lambda" = {version = "*", optional = true}
+"aws-cdk.aws-lambda-event-sources" = {version = "*", optional = true}
+"aws-cdk.aws-lambda-python" = {version = "*", optional = true}
+"aws-cdk.aws-s3" = {version = "*", optional = true}
+awscli = {version = "*", optional = true}
+boto3 = "*"
 
+[tool.poetry.dev-dependencies]
+boto3-stubs = {version = "*", extras = ["batch", "dynamodb", "events", "lambda", "lambda-python", "s3", "s3control", "sns", "sqs", "ssm", "stepfunctions", "sts"]}
+mypy = "*"
+pylint = "*"
 
 [build-system]
 requires = ["poetry-core"]

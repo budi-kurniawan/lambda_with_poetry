@@ -16,7 +16,7 @@ $ cd to lambda-with-poetry
 - Write Lambda handler in the file.
 - Run this command to create a virtual environment:
 ```
-$poetry install
+$ poetry install
 ```
 
 ## Creating A Package (zip file)
@@ -33,6 +33,16 @@ $ or zip -r ../artifact.zip . -x '*.pyc'
 ## Running the Test
 ```
 $ python test.py
+```
+
+## Running MyPy
+```
+$ python lambda_function.py
+```
+
+## Running PyLint
+```
+$ pylint lambda_function.py
 ```
 
 ## References

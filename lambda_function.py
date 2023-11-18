@@ -42,11 +42,10 @@ class HttpResponse(TypedDict):
     headers: dict
     body: str
 
-s3 = boto3.resource("s3")
-
 async def write_to_s3(bucket_name: str, s3_path: str, message: str) -> None:
     ''' Writes the given message to a file referenced by s3_path'''
     encoded_string = message.encode("utf-8")
+    s3 = boto3.resource("s3")
     s3.Bucket(bucket_name).put_object(Key=s3_path, Body=encoded_string)
 
 async def process(bucket_name: str, events: List[Message]) -> None:

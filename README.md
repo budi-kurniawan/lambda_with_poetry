@@ -47,12 +47,12 @@ $ python test.py
 
 ## Running MyPy
 ```
-$ python lambda_function.py
+$ python -m mypy lambda_function.py
 ```
 
 ## Running PyLint
 ```
-$ pylint lambda_function.py
+$ python -m pylint lambda_function.py
 ```
 
 ## References

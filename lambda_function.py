@@ -60,12 +60,18 @@ async def process(bucket_name: str, events: List[Message]) -> None:
         await task
 
 def build_s3_path(event: Message) -> str:
+    '''
+    Reads an event and constructs a path for S3 bucket
+    '''
     ts = event['timestamp']
     day = timestamp_to_date_string(ts)
     unique_id = uuid.uuid4().hex
     return day + '/' + unique_id + '.json'
 
 def build_message(event: Message) -> str:
+    '''
+    Builds a string message from the given event
+    '''
     sn = event['serialNumber']
     ev = event['event']
     ts = event['timestamp']
@@ -77,6 +83,9 @@ def timestamp_to_date_string(ts: int) -> str:
     return f'{dt.year}-{dt.month}-{dt.day}'
 
 def build_http_200(events: List[Message]) -> HttpResponse:
+    '''
+    Constructs a HTTP 200 (success)
+    '''
     return {
         "statusCode": 200,
         "headers": {
@@ -88,6 +97,9 @@ def build_http_200(events: List[Message]) -> HttpResponse:
     }
 
 def build_http_400() -> HttpResponse:
+    '''
+    Constructs a HTTP 400 (invalid input)
+    '''
     msg = "The request could not be understood by the server due to malformed syntax."
     return {
         "statusCode": 400,
@@ -100,6 +112,9 @@ def build_http_400() -> HttpResponse:
     }
 
 def is_input_valid(events: Message | List[Message]) -> bool:
+    '''
+    Determines if an input is valid
+    '''
     if not isinstance(events, dict) and not isinstance(events, list):
         return False
     if isinstance(events, dict):

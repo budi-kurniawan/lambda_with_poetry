@@ -3,7 +3,17 @@
 ## Prerequisites
 - Python 3.10 or later
 - Poetry
-- An S3 bucket created with **AWSLambdaExecute** policy attached to the corresponding role.
+- An S3 bucket created with **AWSLambdaExecute** policy attached to the corresponding role. (See https://docs.aws.amazon.com/AmazonS3/latest/userguide/add-bucket-policy.html)
+
+## Attaching A Policy to Lambda-Linked Role
+After you create an S3 bucket and a lambda handler, it is crucial to follow these steps to grant permissions to the lambda handler to write to the S3 bucket:
+- Go to the Lambda's Configuration page
+- Click the "Permissions" tab
+- Click on the role name, a new window will open
+- Select the "Permissions" tab of the role
+- Click the Add permissions button and select "Attach policies"
+- Search for "AWSLambdaExecute" and add the permission to the role
+
 
 ## Starting the Project
 - Create a new poetry project:

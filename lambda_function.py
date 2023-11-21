@@ -52,29 +52,31 @@ async def process(bucket_name: str, events: List[Message]) -> None:
     ''' Starts processing '''
     tasks = []
     for event in events:
-        sn = event['serialNumber']
-        ev = event['event']
-        ts = event['timestamp']
-        message = '{"serialNumber": "%s", "event": "%s", "timestamp": %d}' % (sn, ev, ts)
-        day = timestamp_to_date_string(ts)
-        unique_id = uuid.uuid4().hex
-        s3_path = day + '/' + unique_id + '.json'
+        message = build_message(event)
+        s3_path = build_s3_path(event)
         task = asyncio.create_task(write_to_s3(str(bucket_name), s3_path, message))
         tasks.append(task)
     for task in tasks:
         await task
+
+def build_s3_path(event: Message) -> str:
+    ts = event['timestamp']
+    day = timestamp_to_date_string(ts)
+    unique_id = uuid.uuid4().hex
+    return day + '/' + unique_id + '.json'
+
+def build_message(event: Message) -> str:
+    sn = event['serialNumber']
+    ev = event['event']
+    ts = event['timestamp']
+    return '{"serialNumber": "%s", "event": "%s", "timestamp": %d}' % (sn, ev, ts)
 
 def timestamp_to_date_string(ts: int) -> str:
     ''' Converts an int representing a timestamp to a string representing Y-m-d'''
     dt = datetime.fromtimestamp(ts)
     return f'{dt.year}-{dt.month}-{dt.day}'
 
-def lambda_handler(events: Message | List[Message], _) -> HttpResponse:
-    ''' The main lambda handler'''
-    if isinstance(events, dict): # if there is only one message, enclose in List
-        events = [events]
-    bucket_name = os.environ['S3_TARGET_BUCKET_NAME']
-    asyncio.run(process(bucket_name, events))
+def build_http_200(events: List[Message]) -> HttpResponse:
     return {
         "statusCode": 200,
         "headers": {
@@ -84,3 +86,35 @@ def lambda_handler(events: Message | List[Message], _) -> HttpResponse:
             "events ": events
         })
     }
+
+def build_http_400() -> HttpResponse:
+    msg = "The request could not be understood by the server due to malformed syntax."
+    return {
+        "statusCode": 400,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": json.dumps({
+            "message ": msg
+        })
+    }
+
+def is_input_valid(events: Message | List[Message]) -> bool:
+    if not isinstance(events, dict) and not isinstance(events, list):
+        return False
+    if isinstance(events, dict):
+        events = [events]
+    for event in events:
+        if 'serialNumber' not in event or 'event' not in event or 'timestamp' not in event:
+            return False
+    return True
+
+def lambda_handler(events: Message | List[Message], _) -> HttpResponse:
+    ''' The main lambda handler'''
+    if not is_input_valid(events):
+        return build_http_400()
+    if isinstance(events, dict): # if there is only one message, enclose in List
+        events = [events]
+    bucket_name = os.environ['S3_TARGET_BUCKET_NAME']
+    asyncio.run(process(bucket_name, events))
+    return build_http_200(events)
